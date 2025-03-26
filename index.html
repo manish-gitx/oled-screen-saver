@@ -21,7 +21,6 @@
 
         body.paused {
             animation-play-state: paused;
-            background: black;
         }
 
         @keyframes gradient {
@@ -86,7 +85,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="moving-text">Click anywhere to stop</div>
+        <div class="moving-text">Click anywhere to enter full screen</div>
     </div>
 
     <script>
@@ -112,20 +111,26 @@
             movingText.style.top = pos.y + 'px';
         }
 
+        // Function to handle fullscreen
+        async function toggleFullscreen() {
+            try {
+                if (!document.fullscreenElement) {
+                    await document.documentElement.requestFullscreen();
+                    movingText.textContent = 'Click anywhere to exit full screen';
+                } else {
+                    await document.exitFullscreen();
+                    movingText.textContent = 'Click anywhere to enter full screen';
+                }
+            } catch (err) {
+                console.log(`Error attempting to enable fullscreen: ${err.message}`);
+            }
+        }
+
         // Move text every 3 seconds
         setInterval(moveText, 3000);
 
-        body.addEventListener('click', () => {
-            isPaused = !isPaused;
-            body.classList.toggle('paused');
-            
-            if (isPaused) {
-                movingText.textContent = 'Click anywhere to start';
-                body.style.background = 'black';
-            } else {
-                movingText.textContent = 'Click anywhere to stop';
-                body.style.background = '';
-            }
+        body.addEventListener('click', async () => {
+            await toggleFullscreen();
         });
 
         // Initial text position
