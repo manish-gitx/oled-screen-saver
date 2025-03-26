@@ -21,6 +21,7 @@
 
         body.paused {
             animation-play-state: paused;
+            background: black;
         }
 
         @keyframes gradient {
@@ -39,6 +40,36 @@
             text-align: center;
             color: white;
             font-family: Arial, sans-serif;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .moving-text {
+            position: absolute;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(100px, 50px);
+            }
+            50% {
+                transform: translate(0, 100px);
+            }
+            75% {
+                transform: translate(-100px, 50px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
         }
 
         h1 {
@@ -55,20 +86,50 @@
 </head>
 <body>
     <div class="container">
-       
+        <div class="moving-text">Click anywhere to stop</div>
     </div>
 
     <script>
         const body = document.body;
+        const container = document.querySelector('.container');
+        const movingText = document.querySelector('.moving-text');
         let isPaused = false;
+
+        // Function to get random position within viewport
+        function getRandomPosition() {
+            const maxX = window.innerWidth - movingText.offsetWidth;
+            const maxY = window.innerHeight - movingText.offsetHeight;
+            return {
+                x: Math.random() * maxX,
+                y: Math.random() * maxY
+            };
+        }
+
+        // Function to move text to random position
+        function moveText() {
+            const pos = getRandomPosition();
+            movingText.style.left = pos.x + 'px';
+            movingText.style.top = pos.y + 'px';
+        }
+
+        // Move text every 3 seconds
+        setInterval(moveText, 3000);
 
         body.addEventListener('click', () => {
             isPaused = !isPaused;
             body.classList.toggle('paused');
             
-            const status = document.querySelector('.status');
-            status.textContent = isPaused ? 'Click anywhere to resume' : 'Click anywhere to pause';
+            if (isPaused) {
+                movingText.textContent = 'Click anywhere to start';
+                body.style.background = 'black';
+            } else {
+                movingText.textContent = 'Click anywhere to stop';
+                body.style.background = '';
+            }
         });
+
+        // Initial text position
+        moveText();
     </script>
 </body>
 </html> 
