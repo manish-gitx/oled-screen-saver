@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Color Shifter</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d, #ff9f43, #ff6b6b);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.paused {
+            animation-play-state: paused;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       
+    </div>
+
+    <script>
+        const body = document.body;
+        let isPaused = false;
+
+        body.addEventListener('click', () => {
+            isPaused = !isPaused;
+            body.classList.toggle('paused');
+            
+            const status = document.querySelector('.status');
+            status.textContent = isPaused ? 'Click anywhere to resume' : 'Click anywhere to pause';
+        });
+    </script>
+</body>
+</html> 
